@@ -1,0 +1,73 @@
+<!--
+ - Created by Sonal_Chaudhary on 9/22/2017.
+ -->
+
+<aura:component description="GoogleMapsAutocomplete" controller="GoogleMapsController">
+    <aura:attribute name="selectedOption" type="String"/>
+    <aura:attribute name="filteredOptions" type="String[]"/>
+    <aura:attribute name="searchKey" type="String"/>
+    <aura:attribute name="placeholder" type="String" default="Enter a location"/>
+
+    <div class="slds-form-element">
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container slds-has-inline-listbox">
+                <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup"
+                     aria-expanded="false"
+                     aria-haspopup="listbox"
+                     role="combobox"
+                     aura:id="searchLookup">
+                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left"
+                         aura:id="iconDirection">
+                        <ui:inputText updateOn="keyup"
+                                      keyup="{!c.keyPressController}"
+                                      class="slds-input slds-combobox__input"
+                                      value="{!v.searchKey}"
+                                      placeholder="{!v.placeholder}"/>
+                        <aura:if isTrue="{!empty(v.selectedOption)}">
+                            <span class="slds-icon_container slds-input__icon">
+                                <c:svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default icn"
+                                       aria-hidden="true"
+                                       xlinkHref="{!$Resource.SLDS + '/assets/icons/utility-sprite/svg/symbols.svg#checkin'}">
+                                </c:svg>
+                                <span class="slds-assistive-text">Description of icon</span>
+                            </span>
+                            <aura:set attribute="else">
+                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                                        onclick="{!c.clear}">
+                                    <c:svg class="slds-button__icon"
+                                           aria-hidden="true"
+                                           xlinkHref="{!$Resource.SLDS + '/assets/icons/utility-sprite/svg/symbols.svg#close'}">
+                                    </c:svg>
+                                    <span class="slds-assistive-text">Remove selected option</span>
+                                </button>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+
+                    <div id="listbox-unique-id" role="listbox">
+                        <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
+                            role="presentation">
+
+                            <aura:iteration items="{!v.filteredOptions}" var="option">
+                                <li role="presentation"
+                                    class="slds-listbox__item"
+                                    onclick="{!c.selectOption}"
+                                    data-value="{!option.value}"
+                                    data-record="{!option.label}">
+                                    <span id="listbox-option-unique-id-01"
+                                          class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                          role="option">
+                                        <span class="slds-media__body">
+                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!option.label}</span>
+                                        </span>
+                                    </span>
+                                </li>
+                            </aura:iteration>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>
